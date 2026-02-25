@@ -378,7 +378,6 @@
             }
         }
 
-        
         .tg-widget-container {
             position: fixed;
             bottom: 30px;
@@ -499,8 +498,115 @@
             display: block;
             text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
+
+        .tg-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background-color: #fff;
+            margin-left: 2px;
+            vertical-align: sub;
+            animation: tg-blink 1s step-end infinite;
+        }
+
+        @keyframes tg-blink { 50% { opacity: 0; } }
+
+        .tg-text-sub {
+            margin-top: 10px;
+            font-size: 12px;
+            line-height: 1.3;
+            color: rgba(255,255,255, 0.9);
+            font-weight: 500;
+            background: rgba(255,255,255,0.15);
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+        
+        .tg-text-highlight {
+            font-weight: 800;
+            color: #fff;
+            border-bottom: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .tg-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: auto;
+            padding-top: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tg-icon-clean svg {
+            width: 32px;
+            height: 32px;
+            fill: #fff;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            display: block;
+        }
+        
+        .tg-action-circle {
+            width: 34px;
+            height: 34px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .tg-widget-link:hover .tg-action-circle {
+            background: #fff;
+            color: #229ED9;
+            transform: rotate(-45deg);
+        }
+
+        .tg-close-btn {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 24px;
+            height: 24px;
+            background: #fff;
+            color: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.2s;
+            z-index: 100000;
+        }
+
+        .tg-widget-container:hover .tg-close-btn {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        @media (max-width: 480px) {
+            .tg-widget-container {
+                bottom: 20px;
+                right: 20px;
+            }
+            .tg-close-btn {
+                opacity: 0.8; 
+                transform: scale(1);
+                top: -8px;
+                right: -8px;
+            }
+        }
     </style>
-    
 </head>
 <body>
 
@@ -701,7 +807,7 @@
         
         <button class="tg-close-btn" onclick="tgCloseWidget(event)">✕</button>
 
-        <a href="https://t.me/primadent_test_aibot" target="_blank" class="tg-widget-link">
+        <a href="https://t.me/YOUR_BOT_NAME?start=discount_offer" target="_blank" class="tg-widget-link">
             <div class="tg-widget-card">
                 
                 <div class="tg-content-top">
@@ -775,6 +881,7 @@
 </body>
 
 </html>
+
 
 
 
