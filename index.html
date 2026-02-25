@@ -377,7 +377,130 @@
                 margin-top: 140px; /* Корректировка отступа для мобильного меню */
             }
         }
+
+        <style>
+        .tg-widget-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99999;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            
+            opacity: 0;
+            /* Начальная позиция для появления */
+            transform: translateY(40px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+            pointer-events: none;
+        }
+
+        /* Класс видимости */
+        .tg-widget-container.visible {
+            opacity: 1;
+            /* Когда появился - сбрасываем transform, чтобы работала анимация левитации */
+            transform: translateY(0);
+            pointer-events: auto;
+            /* Запускаем левитацию */
+            animation: tg-float 6s ease-in-out infinite;
+        }
+
+        /* АНИМАЦИЯ ЛЕВИТАЦИИ (ПАРЕНИЯ) */
+        @keyframes tg-float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); } /* Поднимается вверх */
+            100% { transform: translateY(0px); }
+        }
+
+        .tg-widget-link {
+            text-decoration: none;
+            display: block;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Основная карточка */
+        .tg-widget-card {
+            /* Спокойный, глубокий градиент (без анимации смены цветов) */
+            background: linear-gradient(160deg, rgba(42, 171, 238, 0.95) 0%, #229ED9 100%);
+            
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            
+            width: 150px;
+            min-height: 190px;
+            padding: 22px 18px;
+            border-radius: 20px;
+            
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            
+            color: white;
+            box-shadow: 
+                0 15px 35px rgba(34, 158, 217, 0.35),
+                0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+            
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+            box-sizing: border-box;
+            
+            position: relative;
+            overflow: hidden; /* Обрезаем блик, выходящий за границы */
+        }
+
+        /* ЭФФЕКТ БЛИКА (SHEEN) */
+        .tg-widget-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -200%; /* Начало далеко слева */
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to right, 
+                rgba(255,255,255,0) 0%, 
+                rgba(255,255,255,0.3) 50%, 
+                rgba(255,255,255,0) 100%
+            );
+            transform: skewX(-25deg);
+            /* Блик пробегает каждые 6 секунд */
+            animation: tg-shine 6s infinite; 
+            pointer-events: none;
+        }
+
+        @keyframes tg-shine {
+            0% { left: -200%; }
+            20% { left: 200%; } /* Быстрый пролет */
+            100% { left: 200%; } /* Пауза */
+        }
+
+        /* Убрали @keyframes tg-gradient-flow так как он больше не нужен */
+
+        /* Ховер эффект */
+        .tg-widget-link:hover .tg-widget-card {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(34, 158, 217, 0.5);
+            /* При ховере можно ускорить градиент или остановить левитацию, если нужно */
+        }
+
+        /* Контент внутри */
+        .tg-content-top {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2; /* Текст поверх блика */
+        }
+
+        .tg-typewriter-text {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.25;
+            min-height: 40px;
+            display: block;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
     </style>
+    
 </head>
 <body>
 
@@ -574,7 +697,82 @@
             </div>
         </div>
     </footer>
-<script type="text/javascript" src="//api.venyoo.ru/wnew.js?wc=venyoo/default/science&widget_id=6459940496605192009"></script>
+<div class="tg-widget-container" id="tgWidget">
+        
+        <button class="tg-close-btn" onclick="tgCloseWidget(event)">✕</button>
+
+        <a href="https://t.me/testvenyooclientbot" target="_blank" class="tg-widget-link">
+            <div class="tg-widget-card">
+                
+                <div class="tg-content-top">
+                    <div class="tg-typewriter-text">
+                        <span id="tgTypewriterTarget"></span><span class="tg-cursor"></span>
+                    </div>
+                    <div class="tg-text-sub">
+                        или скидка <span class="tg-text-highlight">10%</span>
+                    </div>
+                </div>
+
+                <div class="tg-card-footer">
+                    <div class="tg-icon-clean">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 11.944 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                        </svg>
+                    </div>
+                    <div class="tg-action-circle">➜</div>
+                </div>
+
+            </div>
+        </a>
+    </div>
+
+    <!-- JS КОД -->
+    <script>
+        (function() {
+            const tgConfig = {
+                text: "Ответим за\n60 секунд",
+                delay: 1000,
+                typeSpeed: 90,
+                widgetId: 'tgWidget',
+                targetId: 'tgTypewriterTarget'
+            };
+
+            document.addEventListener('DOMContentLoaded', function() {
+                setTimeout(() => {
+                    const widget = document.getElementById(tgConfig.widgetId);
+                    if(widget) {
+                        widget.classList.add('visible');
+                        setTimeout(typeText, 300);
+                    }
+                }, tgConfig.delay);
+            });
+
+            let charIndex = 0;
+            function typeText() {
+                const target = document.getElementById(tgConfig.targetId);
+                if (!target) return;
+
+                if (charIndex < tgConfig.text.length) {
+                    const char = tgConfig.text.charAt(charIndex);
+                    if (char === "\n") {
+                        target.innerHTML += "<br>";
+                    } else {
+                        target.innerHTML += char;
+                    }
+                    charIndex++;
+                    setTimeout(typeText, tgConfig.typeSpeed);
+                }
+            }
+        })();
+
+        function tgCloseWidget(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const widget = document.getElementById('tgWidget');
+            if(widget) widget.classList.remove('visible');
+        }
+    </script>
 </body>
 
 </html>
+
