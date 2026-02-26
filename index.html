@@ -379,34 +379,41 @@
         }
 
         .tg-widget-container {
+            /* Базовый масштаб для десктопа */
+            --tg-scale: 1; 
+            
             position: fixed;
             bottom: 30px;
-            right: 30px;
+            left: 30px;
             z-index: 99999;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             
+            /* Точка масштабирования: левый нижний угол */
+            transform-origin: bottom left; 
+            
             opacity: 0;
-            /* Начальная позиция для появления */
-            transform: translateY(40px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            /* Начальная позиция для появления с учетом переменной масштаба */
+            transform: scale(var(--tg-scale)) translateY(40px);
+            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             pointer-events: none;
         }
 
         /* Класс видимости */
         .tg-widget-container.visible {
             opacity: 1;
-            /* Когда появился - сбрасываем transform, чтобы работала анимация левитации */
-            transform: translateY(0);
+            transform: scale(var(--tg-scale)) translateY(0);
             pointer-events: auto;
-            /* Запускаем левитацию */
+            /* Запускаем левитацию после появления */
             animation: tg-float 6s ease-in-out infinite;
+            /* Небольшая задержка анимации, чтобы не конфликтовать с появлением */
+            animation-delay: 0.6s; 
         }
 
-        /* АНИМАЦИЯ ЛЕВИТАЦИИ (ПАРЕНИЯ) */
+        /* АНИМАЦИЯ ЛЕВИТАЦИИ С УЧЕТОМ МАСШТАБА */
         @keyframes tg-float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-12px); } /* Поднимается вверх */
-            100% { transform: translateY(0px); }
+            0% { transform: scale(var(--tg-scale)) translateY(0px); }
+            50% { transform: scale(var(--tg-scale)) translateY(-12px); }
+            100% { transform: scale(var(--tg-scale)) translateY(0px); }
         }
 
         .tg-widget-link {
@@ -418,7 +425,7 @@
 
         /* Основная карточка */
         .tg-widget-card {
-            /* Спокойный, глубокий градиент (без анимации смены цветов) */
+            /* Легкий, спокойный статичный градиент */
             background: linear-gradient(160deg, rgba(42, 171, 238, 0.95) 0%, #229ED9 100%);
             
             backdrop-filter: blur(10px);
@@ -442,7 +449,7 @@
             box-sizing: border-box;
             
             position: relative;
-            overflow: hidden; /* Обрезаем блик, выходящий за границы */
+            overflow: hidden; /* Обрезаем блик */
         }
 
         /* ЭФФЕКТ БЛИКА (SHEEN) */
@@ -450,7 +457,7 @@
             content: '';
             position: absolute;
             top: 0;
-            left: -200%; /* Начало далеко слева */
+            left: -200%;
             width: 100%;
             height: 100%;
             background: linear-gradient(
@@ -460,24 +467,20 @@
                 rgba(255,255,255,0) 100%
             );
             transform: skewX(-25deg);
-            /* Блик пробегает каждые 6 секунд */
             animation: tg-shine 6s infinite; 
             pointer-events: none;
         }
 
         @keyframes tg-shine {
             0% { left: -200%; }
-            20% { left: 200%; } /* Быстрый пролет */
-            100% { left: 200%; } /* Пауза */
+            20% { left: 200%; } 
+            100% { left: 200%; }
         }
 
-        /* Убрали @keyframes tg-gradient-flow так как он больше не нужен */
-
-        /* Ховер эффект */
+        /* Ховер эффект карточки */
         .tg-widget-link:hover .tg-widget-card {
             transform: translateY(-5px) scale(1.02);
             box-shadow: 0 25px 50px rgba(34, 158, 217, 0.5);
-            /* При ховере можно ускорить градиент или остановить левитацию, если нужно */
         }
 
         /* Контент внутри */
@@ -487,7 +490,7 @@
             align-items: flex-start;
             margin-bottom: 10px;
             position: relative;
-            z-index: 2; /* Текст поверх блика */
+            z-index: 2;
         }
 
         .tg-typewriter-text {
@@ -594,8 +597,8 @@
             transform: scale(1);
         }
 
-       /* === АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ === */
-        @media (max-width: 480px) {
+        /* === АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ === */
+        @media (max-width: 450px) {
             .tg-widget-container {
                 /* Уменьшаем весь виджет ровно на 20% */
                 --tg-scale: 0.8; 
@@ -886,6 +889,7 @@
 </body>
 
 </html>
+
 
 
 
