@@ -594,16 +594,21 @@
             transform: scale(1);
         }
 
+       /* === АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ === */
         @media (max-width: 480px) {
             .tg-widget-container {
+                /* Уменьшаем весь виджет ровно на 20% */
+                --tg-scale: 0.8; 
+                
                 bottom: 20px;
-                right: 20px;
+                left: 20px;
             }
             .tg-close-btn {
                 opacity: 0.8; 
                 transform: scale(1);
+                /* Смещаем крестик чуть ближе на мобилках для удобного тапа */
                 top: -8px;
-                right: -8px;
+                right: -8px; 
             }
         }
     </style>
@@ -881,6 +886,7 @@
 </body>
 
 </html>
+
 
 
 
